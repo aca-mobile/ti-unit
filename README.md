@@ -67,5 +67,5 @@ Ti = require('./jsca.api.parser').parse();
 
 ## How to use it
 
-See https://wiki.aca-it.be/confluence/display/MOBDEV/Unit+JS+testing for more information about Ti, MockRequire, L(), Alloy.CFG and Alloy.Global
+See PENDING:LINK for more information about Ti, MockRequire, L(), Alloy.CFG and Alloy.Global
 

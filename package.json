@@ -1,0 +1,19 @@
+{
+  "name": "tiunit",
+  "version": "1.0.0",
+  "description": "Real unit testing and mocking for Appcelerator Titanium",
+  "main": "jsca.api.parser.js",
+  "scripts": {
+    "test": "N/A",
+    "postinstall": "node ./tiunit-postinstall"
+  },
+  "repository": {
+  },
+  "keywords": [
+    "titanium",
+    "appcelerator",
+    "jasmine",
+    "unit-testing",
+    "mock"
+  ]
+}

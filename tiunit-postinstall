@@ -1,0 +1,5 @@
+console.error('\n\nTiUnit succesfully installed');
+console.error('Please configure your project as follows: ');
+console.error('- Copy the 2 files under <project>/node_modules/tiunit/helper/ to <project>/spec/helpers');
+console.error('- Copy the file <project>/node_modules/tiunit/support/parser.json to <project>/spec/support');
+console.error('- Add the entry "helpers/underscore-jasmine.js" to the helpers section of spec/helpers/jasmine.json');

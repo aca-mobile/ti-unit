@@ -40,6 +40,3 @@ Ti = require('./jsca.api.parser').parse();
 MockRequire = require('tiunit/mockrequire');
 ```
 For more information, see https://github.com/aca-mobile/ti-unit/wiki
-
-See PENDING:LINK for more information about Ti, MockRequire, L(), Alloy.CFG and Alloy.Global
-

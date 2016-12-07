@@ -3,22 +3,7 @@ Real unit testing and mocking for Appcelerator Titanium
 
 ## INSTALLATION
 
-Currently, the package is not available in a (private) npm repository. Therefore, we have to package it ourselves
-before it can be installed.
-
-```
-// from within the TiUnit folder (this will create an artifact eg. tiunit-1.0.0.tgz)
-npm pack
-```
-
-Install it in your project:
-```
-// from within your project folder
-npm install <path.to.your.artifact>/tiunit-1.0.0.tgz --save-dev
-```
-
-The above commands should package the module and install it in your projects node_modules folder(will be created if it
-does not exist).
+See https://github.com/aca-mobile/ti-unit/wiki
 
 From now on, you can use the Ti mock and MockRequire like this:
 
@@ -27,9 +12,7 @@ From now on, you can use the Ti mock and MockRequire like this:
     MockRequire = require('tiunit/mockrequire');
 ```
 
-Attention: after the module has been installed, the following
-
-Manual steps:
+Attention: after the module has been installed, the following manual steps should be executed:
 
 - Copy the 2 files under <project>/node_modules/tiunit/helper/ to <project>/spec/helpers
 - Copy the file <project>/node_modules/tiunit/support/parser.json to <project>/spec/support
@@ -50,22 +33,19 @@ Manual steps:
 }
 ```
 
-- Configure parser json PENDING explain the difference
-
-
-    Ti = require('tiunit/jsca.api.parser').parse();
-    MockRequire = require('tiunit/mockrequire');
-
-
-```
-Ti = require('./jsca.api.parser').parseFromConfig();
-```
-or
-```
-Ti = require('./jsca.api.parser').parse();
-```
-
 ## How to use it
+
+Now you can:
+
+```
+// create a mock for the Ti namespace based on your own local api.jsca
+Ti = require('./jsca.api.parser').parseFromConfig();
+
+// or create on based on the embedded api.jsca
+Ti = require('./jsca.api.parser').parse();
+
+```
+For more information, see https://github.com/aca-mobile/ti-unit/wiki
 
 See PENDING:LINK for more information about Ti, MockRequire, L(), Alloy.CFG and Alloy.Global
 

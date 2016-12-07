@@ -5,13 +5,6 @@ Real unit testing and mocking for Appcelerator Titanium
 
 See https://github.com/aca-mobile/ti-unit/wiki
 
-From now on, you can use the Ti mock and MockRequire like this:
-
-```
-    Ti = require('tiunit/jsca.api.parser').parse();
-    MockRequire = require('tiunit/mockrequire');
-```
-
 Attention: after the module has been installed, the following manual steps should be executed:
 
 - Copy the 2 files under <project>/node_modules/tiunit/helper/ to <project>/spec/helpers
@@ -35,7 +28,7 @@ Attention: after the module has been installed, the following manual steps shoul
 
 ## How to use it
 
-Now you can:
+From now on, you can use the Ti mock and MockRequire like this:
 
 ```
 // create a mock for the Ti namespace based on your own local api.jsca
@@ -44,6 +37,7 @@ Ti = require('./jsca.api.parser').parseFromConfig();
 // or create on based on the embedded api.jsca
 Ti = require('./jsca.api.parser').parse();
 
+MockRequire = require('tiunit/mockrequire');
 ```
 For more information, see https://github.com/aca-mobile/ti-unit/wiki
 

@@ -38,5 +38,8 @@ Ti = require('./jsca.api.parser').parseFromConfig();
 Ti = require('./jsca.api.parser').parse();
 
 MockRequire = require('tiunit/mockrequire');
+
+// create a mock for $
+$ = require('tiunit/mockcontroller').createControllerMock('./app/controllers/myController.js');
 ```
 For more information, see https://github.com/aca-mobile/ti-unit/wiki

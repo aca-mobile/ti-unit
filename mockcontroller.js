@@ -30,8 +30,8 @@ function mockController(controllerPath){
     var reFunctions = /\$(.[a-zA-Z.]+[(]+)+/g ;
     var reProperties = /\$(.[a-zA-Z.]+[\s=])+/g ;
 
-    var usedProperties = new String(controllerSourceCode).match(reProperties);
-    var usedFunctions = new String(controllerSourceCode).match(reFunctions);
+    var usedProperties = _findAndReturnMatchesArray(controllerSourceCode, reProperties);
+    var usedFunctions = _findAndReturnMatchesArray(controllerSourceCode, reFunctions);
 
     usedProperties.forEach(function(item){
 
@@ -79,6 +79,12 @@ function mockController(controllerPath){
         if(shift != undefined){
             _pushNamespaces(parentNamespace[namespace], shift, list, isProperty);
         }
+    }
+
+    function _findAndReturnMatchesArray(source, regEx){
+        var matches = new String(source).match(regEx);
+        matches = _.isNull(matches) ? [] : matches;
+        return matches;
     }
 
     return dollar;

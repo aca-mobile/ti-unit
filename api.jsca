@@ -94064,6 +94064,55 @@
           "description": "<p>return an integer value</p>"
         },
         {
+          "name": "getObject",
+          "parameters": [
+            {
+              "name": "property",
+              "usage": "",
+              "type": "String",
+              "description": "Returns the value of a property as an object"
+            },
+            {
+              "name": "default",
+              "usage": "",
+              "type": "Object",
+              "description": "Default value to return if property does not exist"
+            }
+          ],
+          "userAgents": [
+            {
+              "platform": "iphone"
+            },
+            {
+              "platform": "android"
+            },
+            {
+              "platform": "ipad"
+            }
+          ],
+          "since": [
+            {
+              "version": "0.8",
+              "name": "Titanium Mobile SDK"
+            }
+          ],
+          "returnTypes": [
+            {
+              "type": "Object",
+              "description": ""
+            }
+          ],
+          "isConstructor": false,
+          "isClassProperty": false,
+          "examples": [],
+          "isInternal": false,
+          "exceptions": [],
+          "references": [],
+          "isMethod": true,
+          "isInstanceProperty": true,
+          "description": "<p>return a value as an object</p>"
+        },
+        {
           "name": "getList",
           "parameters": [
             {

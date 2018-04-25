@@ -1,95 +1,82 @@
-function mockController(controllerPath){
+function mockController(controllerPath) {
+	var START_SLICE_POSITION = 2;
 
-    if(!controllerPath){
-        console.warn('Please specify path to a controller');
-        return;
-    }
+	if (!controllerPath) {
+		console.warn('Please specify path to a controller');
+		return;
+	}
 
-    var fs = require('fs');
+	var fs = require('fs');
 
-    var controllerSourceCode = fs.readFileSync(controllerPath);
-    var dollar;
-    dollar = {};
+	var controllerSourceCode = fs.readFileSync(controllerPath);
+	var dollar = {};
 
-    if(false) {
-        console.info(`Current directory: ${process.cwd()}`);
-        console.info('This is the source code of the controller: ' + controllerSourceCode);
-    }
+	// matches all functions only
+	var reFunctions = /\$(.[a-zA-Z.]+[(]+)+/g;
 
-    // matches all functions only
-    // \$(.[a-zA-Z.]+[(]+)+
+	// matches all properties (followed by space or =) only
+	var reProperties = /\$(.[a-zA-Z.]+[\s=])+/g;
 
-    // matches all properties (followed by space or =) only
-    // \$(.[a-zA-Z.]+[\s=])+
+	var usedProperties = _findAndReturnMatchesArray(controllerSourceCode, reProperties);
+	var usedFunctions = _findAndReturnMatchesArray(controllerSourceCode, reFunctions);
 
-    // original regex
-    // var re = /\$(.[a-zA-Z]+)+/g;
+	usedProperties.forEach(function(item){
+		_handleNameSpaces(item, true);
+	});
 
+	usedFunctions.forEach(function(item){
+		_handleNameSpaces(item, false);
+	});
 
-    var re = /\$(.[a-zA-Z]+)+/g;
-    var reFunctions = /\$(.[a-zA-Z.]+[(]+)+/g ;
-    var reProperties = /\$(.[a-zA-Z.]+[\s=])+/g ;
+	function _handleNameSpaces(item, isProperty) {
+		if (item.indexOf('$.') == -1) return;
 
-    var usedProperties = _findAndReturnMatchesArray(controllerSourceCode, reProperties);
-    var usedFunctions = _findAndReturnMatchesArray(controllerSourceCode, reFunctions);
+		var name = item.slice(START_SLICE_POSITION);
+		var namespaces = name.split('.');
+		var firstNamespace = namespaces.shift();
 
-    usedProperties.forEach(function(item){
+		if(!_.isUndefined(firstNamespace)){
+			_pushNamespaces(dollar, firstNamespace, namespaces, isProperty);
+		}
+	}
 
-        if (item.indexOf('$.') == -1) return;
+	function _pushNamespaces(parentNamespace, namespace, list, isProperty) {
+		// in order to isolate the namespace without any additional characters, the regex must be executed twice.
+		// otherwise, function calls within a function call on a root namespace object, will be contained within the namespace too.
+		// eg. in the first run, the expression captures the following result:
+		// $.dateFoo.setValue(moment(selectedDate
+		// to get rid of the function call within our namespace function call, we need to execute the regex a second time, giving us:
+		// $.dateFoo.setValue
 
-        var name = item.slice(2);
-        var namespaces = name.split('.');
-        var firstNamespace = namespaces.shift();
-        if(firstNamespace != undefined){
-            _pushNamespaces(dollar, firstNamespace, namespaces, true);
-        }
-    });
+		namespace = namespace.replace(/\[.*$/g, '');
+		namespace = namespace.replace(/\[.*$/g, '');
+		namespace = namespace.replace(/\([a-zA-Z.]*/g, '');
+		namespace = namespace.replace(/\([a-zA-Z.]*/g, '');
 
-    usedFunctions.forEach(function(item){
+		if (!parentNamespace[namespace]) {
+			if (isProperty) {
+				parentNamespace[namespace] = {};
+			} else {
+				parentNamespace[namespace] = function () {
+				};
+			}
+		}
 
-        if (item.indexOf('$.') == -1) return;
+		var shift = list.shift();
+		if (shift != undefined) {
+			_pushNamespaces(parentNamespace[namespace], shift, list, isProperty);
+		}
+	}
 
-        var name = item.slice(2);
-        var namespaces = name.split('.');
-        var firstNamespace = namespaces.shift();
-        if(firstNamespace != undefined){
-            _pushNamespaces(dollar, firstNamespace, namespaces, false);
-        }
-    });
+	function _findAndReturnMatchesArray(source, regEx) {
+		var matches = new String(source).match(regEx);
+		matches = _.isNull(matches) ? [] : matches;
+		return matches;
+	}
 
-    function _pushNamespaces(parentNamespace, namespace, list, isProperty){
-
-        // we need to execute them at least twice, code could be improved though
-        // eg. $.dateFoo.setValue(moment(selectedDate --> $.dateFoo.setValue
-
-        namespace = namespace.replace(/\[.*$/g, '');
-        namespace = namespace.replace(/\[.*$/g, '');
-        namespace = namespace.replace(/\([a-zA-Z.]*/g, '');
-        namespace = namespace.replace(/\([a-zA-Z.]*/g, '');
-
-        if(!parentNamespace[namespace]){
-            if(isProperty){
-                parentNamespace[namespace] = {};
-            } else {
-                parentNamespace[namespace] = function(){};
-            }
-        }
-
-        var shift = list.shift();
-        if(shift != undefined){
-            _pushNamespaces(parentNamespace[namespace], shift, list, isProperty);
-        }
-    }
-
-    function _findAndReturnMatchesArray(source, regEx){
-        var matches = new String(source).match(regEx);
-        matches = _.isNull(matches) ? [] : matches;
-        return matches;
-    }
-
-    return dollar;
+	return dollar;
 }
 
 module.exports = {
-    createControllerMock: mockController
-}
+	createControllerMock: mockController
+};

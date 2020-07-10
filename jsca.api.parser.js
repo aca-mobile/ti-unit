@@ -3,12 +3,11 @@
  *
  * credits to and inspired by mockti.js (https://github.com/janruehling/mockti)
  */
-function jscaApiParser(apiPath){
+function jscaApiParser(apiPath = __dirname){
 
-    if (!apiPath) apiPath = __dirname + '/api.jsca';
     var fs = require('fs');
 
-    var data = JSON.parse(fs.readFileSync(__dirname + '/api.jsca'));
+    var data = JSON.parse(fs.readFileSync(apiPath + '/api.jsca'));
 
     var Ti;
     Ti = {};
